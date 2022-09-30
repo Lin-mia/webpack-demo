@@ -9,7 +9,8 @@ module.exports={
           directory: path.join(__dirname, "dist"),
         },
         // watchFiles: ['./src/index.html'],
-        open: true
+        open: true,
+        hot: 'only'
       },
       
     output:{

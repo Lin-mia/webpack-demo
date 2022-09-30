@@ -3,6 +3,11 @@
   height: 200px;
   transform: translate(10px,10px);
 }
+div{
+  &:nth-child(odd){
+    background: blue;
+  }
+}
 @font-face {
     font-family: "iconfont"; /* Project id 2958947 */
     src: url('../font/iconfont.woff2?t=1664333188845') format('woff2'),
