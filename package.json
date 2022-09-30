@@ -1,0 +1,38 @@
+{
+  "name": "01-init",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "bundle": "webpack",
+    "start": "webpack serve --hot",
+    "server": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "dependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.12",
+    "css-loader": "^6.7.1",
+    "express": "^4.18.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "postcss-loader": "^7.0.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-middleware": "^5.3.3",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
