@@ -1,3 +1,7 @@
+import number from './number.js'
+import count from './count.js'
+number()
+count()
 import mul from "../utils.js"
 import _ from 'lodash'
 import img from '../images/kru0w4th0szh.jpg'
@@ -37,3 +41,19 @@ const div1 = document.querySelector('#div1')
 div1.innerHTML = `<div class='iconfont icon-biaoqian'> abcdddddeeeeeffffddee </div>`
 
 
+
+// // 类似于监听到number.js的操作，以函数内操作替代监听的自动刷新
+// // 什么都不做，也不自动刷新了
+// if(module.hot){
+//     module.hot.accept('./number.js',()=>{
+//         document.body.removeChild(document.querySelector('#div222'))
+//         number()
+//     })
+// }
+
+
+// babel
+const arr = [new Promise(()=>{}),new Promise(()=>{})]
+arr.map(item=>{
+    console.log(item,"item")
+})
