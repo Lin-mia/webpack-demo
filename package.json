@@ -9,7 +9,8 @@
     "dev": "webpack serve --config ./build/webpack.dev.config.js",
     "dev-build": "webpack --profile --json > stats.json --config ./build/webpack.dev.config.js",
     "build": "webpack --config ./build/webpack.prod.config.js",
-    "server": "node server.js"
+    "server": "node server.js",
+    "build:dll": "webpack --config ./build/webpack.dll.config.js"
   },
   "keywords": [],
   "author": "",
@@ -21,10 +22,13 @@
   "dependencies": {
     "@babel/runtime": "^7.19.0",
     "@babel/runtime-corejs3": "^7.19.1",
+    "add-asset-html-webpack-plugin": "^5.0.2",
     "axios": "^1.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "core-js": "^3.25.5",
-    "lodash": "^4.17.21"
+    "jquery": "^3.6.1",
+    "lodash": "^4.17.21",
+    "vue": "^3.2.40"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

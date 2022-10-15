@@ -1,6 +1,6 @@
 import '../assects/index.css'
 import '../assects/index2.css'
-
+import { createApp } from 'vue'
 import axios from  'axios'
 import {add} from './number'
 import _ from 'lodash'
@@ -30,3 +30,6 @@ axios.get("/react/api/header.json")
 .then((res)=>{
     console.log(res)
 })
+
+const vue = createApp()
+console.log(vue)
