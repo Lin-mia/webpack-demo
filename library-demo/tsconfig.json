@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist", // 打包输出路径，不写的话webpack.output也写了
+        "module": "es6", // 使用的es6代码
+        "target": "es5", // 转化成es5代码
+        "allowJs": true, // 允许ts加载js模块
+    }
+}
