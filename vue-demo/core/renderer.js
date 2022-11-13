@@ -21,19 +21,24 @@ function remove(el,parent){
 export function mountElement(vnode, container){
     const {tag, props, children } = vnode
     // tag
+    // 将创建的真实节点元素挂载到虚拟节点上，即通过虚拟节点也可以操作真实节点
     const el = (vnode.el = createElem(tag))
     // props = {}
     for(let key in props){
         const val = props[key]
         patchProps(el, key, null, val)
     }
+    // children
     if(typeof children === "string"){
+        // string，直接创建文本节点挂载
         insert(createTextNode(children),el)
     }else if(Array.isArray(children)){
         children.forEach(v => {
+            // children节点是数组，则将每一个虚拟节点转化为节点挂载上去
             mountElement(v,el)
         });
     }
+    // 将创建的真实节点 挂载到容器上
     insert(el,container)
 }
 // n1 oldVnode
@@ -74,7 +79,7 @@ export function diff(n1,n2){
                 el.innerHTML = newChildren
             }
         }else if(Array.isArray(newChildren)){
-            // 旧节点是文本，则置空，将新元素依次挂载到el上
+            // 旧节点是文本，则置空，将虚拟节点转化为节点挂载到el上
             if(typeof oldChildren === 'string'){
                 el.innerHTML = ''
                 newChildren.forEach(v=>{
