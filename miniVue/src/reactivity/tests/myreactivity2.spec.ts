@@ -1,59 +1,55 @@
-import {reactivity } from '../reactivity'
-import {effect , stop} from '../effect'
+import { reactivity } from "../reactivity2";
+import { effect, stop } from "../effect2";
+
 
 describe('reactivity',()=>{
-    it('reactivity1',()=>{
-        const obj = {age: 18}
-        const a = reactivity(obj)
-        expect(a.age).toBe(18)
+    it('object',()=>{
+        const obj = { foo : 1}
+        const obj2 = reactivity(obj)
+        expect(obj).not.toBe(obj2)
+        expect(obj.foo).toBe(1)
     })
-    it('effect',()=>{
-        const obj = {age: 18}
-        let a = reactivity(obj)
-        let b = 0; 
-        const run = effect(()=>{
-            b = a.age+1
+    it('trigger', () =>{
+        const obj = reactivity({ foo: 1})
+        let b;
+        effect(()=>{
+            b = obj.foo+1
         })
-        expect(b).toBe(19)
-        a.age++;
-        expect(b).toBe(20)
-        expect(typeof run).toBe("function")
-        run()
-        expect(b).toBe(20)
+        expect(b).toBe(2)
+        obj.foo++
+        expect(b).toBe(3)
     })
-    it('effect runner',()=>{
-        let foo = 0
+    it('runner', ()=>{
+        let foo = 1
         const runner = effect(()=>{
             foo++
-            return foo
+            return 'foo'
         })
-        expect(foo).toBe(1)
-        runner()
-        console.dir(runner)
         expect(foo).toBe(2)
-        expect(runner()).toBe(3) // 测试runner return值 
+        runner()
+        expect(foo).toBe(3)
+        expect(runner()).toBe('foo')
     })
-
-    it('scheduler',()=>{
+    it('scheduler', ()=>{
         let run;
+        const obj =reactivity( {foo : 1} )
+        
         let dummy;
         let scheduler = jest.fn(()=>{
             run = runner
         })
-        const obj =reactivity( {foo : 1} )
-
         const runner = effect(()=>{
             dummy = obj.foo
-        },{ scheduler })
-        expect(scheduler).not.toHaveBeenCalled();
-        expect(dummy).toBe(1);
-        obj.foo ++ 
-        expect(scheduler).toHaveBeenCalledTimes(1);
-        expect(dummy).toBe(1);
-        run()
-        expect(dummy).toBe(2);
-    })
+        },{scheduler})
 
+        expect(dummy).toBe(1)
+        expect(scheduler).not.toHaveBeenCalled()
+        obj.foo = 10 
+        expect(dummy).toBe(1)
+        expect(scheduler).toHaveBeenCalledTimes(1)
+        run()
+        expect(dummy).toBe(10)
+    })
     it('stop',()=>{
         // stop 传入runner 清除依赖池中的当前依赖
         const obj = reactivity({foo : 1})
