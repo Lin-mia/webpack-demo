@@ -13,6 +13,8 @@ let shouTrack;
     比如在obj.age++ 中进行了一个取值操作，不跑stop()函数的情况下，isactive一直都是true，此时会重复收集依赖
     而通过shouTrack操作，每次run()【开始时赋值true然后继续收集依赖】完成后都是false[即初始化or set赋值操作] 单纯的取值操作track检验时是false，不会再往下收集依赖
 
+    所以实际而言，并不是shouTrack和isactive有关联，这两个是不同的标记。
+    一个是代表是否停止了run 一个是是否应该继续停止收集依赖，虽然在isactive为false情况下需要停止收集依赖，但两者并不等价。
  */
 function isTracking(){
     return shouTrack && activeEffect!==undefined
