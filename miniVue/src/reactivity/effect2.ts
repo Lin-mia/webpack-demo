@@ -33,19 +33,19 @@ let activeEffect;
 
 const targetsMap = new Map();
 export function track(target, key) {
-  let depsMap = targetsMap.get(target); // 响应式对象的依赖池映射
+  let depsMap = targetsMap.get(target);
   if (!depsMap) {
     depsMap = new Map();
     targetsMap.set(target, depsMap);
   }
   let dep = depsMap.get(key);
   if (!dep) {
-    dep = new Set(); // 不重复
+    dep = new Set();
     depsMap.set(key, dep);
   }
   if (!activeEffect) return;
   dep.add(activeEffect);
-  activeEffect.deps.push(dep); // 当前依赖监听的
+  activeEffect.deps.push(dep);
 }
 
 export function trigger(target, key) {

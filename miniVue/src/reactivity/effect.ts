@@ -1,5 +1,23 @@
 import { extend } from "../shared/extend";
 
+// 当前依赖实例
+let activeEffect;
+// 是否需要继续收集依赖
+let shouTrack;
+
+/**
+ * 问题：
+ * 为什么不在track中直接使用effect.isActive属性，stop后为isactive为false 不再收集依赖
+    track()--> if(!activeEffect.isActive) return // stop 后 不再收集依赖
+    解答：
+    比如在obj.age++ 中进行了一个取值操作，不跑stop()函数的情况下，isactive一直都是true，此时会重复收集依赖
+    而通过shouTrack操作，每次run()【开始时赋值true然后继续收集依赖】完成后都是false[即初始化or set赋值操作] 单纯的取值操作track检验时是false，不会再往下收集依赖
+
+ */
+function isTracking(){
+    return shouTrack && activeEffect!==undefined
+}
+
 // 依赖抽象类
 class ReactivityEffect {
     private _fn: any
@@ -10,8 +28,14 @@ class ReactivityEffect {
         this._fn = fn
     }
     run() {
+        if(!this.isActive){
+            return this._fn()
+        }
         activeEffect = this // 指定当前依赖
-        return this._fn() // 不返回则执行[effect-->runner()]后是undefined
+        shouTrack = true
+        const res = this._fn() // 不返回则执行[effect-->runner()]后是undefined
+        shouTrack = false
+        return res
     }
 
     stop(){
@@ -27,9 +51,8 @@ function cleanupEffect(effect){
     effect.deps.forEach((dep:any)=>{
         dep.delete(effect)
     })
+    effect.deps.length = 0 //已清空依赖记录
 }
-// 当前依赖实例
-let activeEffect;
 
 /** 创建依赖实例
  * @reurns run()
@@ -55,6 +78,7 @@ export const effect = (fn, options:any = {}) => {
  */
 const targetsMap = new Map()
 export function track(raw, key) {
+    if(!isTracking()) return 
     let depsMap = targetsMap.get(raw)
     if (!depsMap) {
         depsMap = new Map()
@@ -65,7 +89,8 @@ export function track(raw, key) {
         dep = new Set()
         depsMap.set(key, dep)
     }
-    if(activeEffect){
+
+    if(!dep.has(activeEffect)){
         dep.add(activeEffect)
         activeEffect.deps.push(dep)
     }

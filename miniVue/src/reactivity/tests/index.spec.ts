@@ -1,13 +1,15 @@
-import {reactivity, effect} from '../index'
+import {reactive} from '../reactivity'
+import {effect} from '../effect'
+
 it('reactivity',()=>{
     const obj = {age: 18}
-    const a = reactivity(obj)
+    const a = reactive(obj)
     expect(a.age).toBe(18)
 })
 
-it.skip('reactivity',()=>{
+it('reactivity',()=>{
     const obj = {age: 18}
-    let a = reactivity(obj)
+    let a = reactive(obj)
     let b = 0; 
     effect(()=>{
         b = a.age+1
