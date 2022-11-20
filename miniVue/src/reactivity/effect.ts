@@ -16,12 +16,12 @@ let shouTrack;
     所以实际而言，并不是shouTrack和isactive有关联，这两个是不同的标记。
     一个是代表是否停止了run 一个是是否应该继续停止收集依赖，虽然在isactive为false情况下需要停止收集依赖，但两者并不等价。
  */
-function isTracking(){
+export function isTracking(){
     return shouTrack && activeEffect!==undefined
 }
 
 // 依赖抽象类
-class ReactivityEffect {
+export class ReactivityEffect {
     private _fn: any
     deps = []
     isActive = true
@@ -91,13 +91,14 @@ export function track(raw, key) {
         dep = new Set()
         depsMap.set(key, dep)
     }
-
+    trackEffect(dep)
+}
+export function trackEffect(dep){
     if(!dep.has(activeEffect)){
         dep.add(activeEffect)
         activeEffect.deps.push(dep)
     }
 }
-
 
 /**
  * 
@@ -109,6 +110,10 @@ export function track(raw, key) {
  export function trigger(raw, key) {
     let depsMap = targetsMap.get(raw)
     let dep = depsMap.get(key)
+    triggerEffect(dep)
+ }
+ 
+export function triggerEffect(dep){
     for(const effect of dep){
         if(effect.scheduler){
             effect.scheduler()
@@ -116,9 +121,7 @@ export function track(raw, key) {
             effect.run()
         }
     }
- }
- 
-
+}
 
  export function stop(runner){
     runner.effect.stop()
